@@ -1,0 +1,3 @@
+name: Android Root
+description: Native Android/Bionic root agent with local code and system tools.
+order: 1

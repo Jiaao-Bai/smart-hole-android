@@ -1,0 +1,59 @@
+# Android is intentionally a full-root profile. The native app provides the
+# visible approval boundary, emergency stop, and audit log.
+- id: sandbox-policy
+  config:
+    mode: danger-full-access
+    workspaceRoot: !!js process.env.DSH_ANDROID_WORKSPACE ?? '/data/adb/dsh-android/workspaces/default'
+
+- id: approval
+  config:
+    policy: never
+
+# The desktop preset switcher requires a sandbox-reporting shell. Android's
+# root profile is fixed to danger-full-access, so there is no runtime preset
+# transition to expose.
+- id: permission
+  disabled: true
+
+# The native client creates Android sessions explicitly, and this default also
+# protects sessions created by other loopback clients from inheriting the
+# desktop/Web `standard` preset.
+- id: agent-presets
+  config:
+    default: android
+
+# Android's Root profile deliberately bypasses the desktop confinement stack.
+# The standard local providers still retain process-tree and bounded-output
+# behavior without loading Landlock, Windows Koffi, or node-pty at startup.
+- id: sandbox
+  disabled: true
+
+- id: bash-sandbox
+  disabled: true
+
+- id: fs-sandbox
+  disabled: true
+
+# A patch cannot rename an existing composition row. Disable the desktop
+# sandbox consumers above, then insert Android-safe local providers under new
+# ids. They expose the same `shell` and `fs` services without loading the
+# desktop confinement stack.
+- insert:
+    - id: bash-android-local
+      name: '@deepseek-ai/dsh-bash-local'
+      config:
+        timeoutMs: 60000
+
+    - id: fs-android-local
+      name: '@deepseek-ai/dsh-fs-local'
+
+    - id: android-system-tools
+      name: 'dsh-plugin-android'
+
+- id: system-prompt
+  config:
+    persona: >-
+      You are a local root agent running on Android/Bionic. Use Android paths,
+      /system/bin/sh, cmd, pm, am, settings, dumpsys, getprop, and other
+      platform tools. Do not assume desktop Linux, macOS, Windows, systemd,
+      Homebrew, apt, or a GNU userland. Your working directory is {{cwd}}.

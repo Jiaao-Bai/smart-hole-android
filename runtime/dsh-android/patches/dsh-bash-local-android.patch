@@ -1,0 +1,20 @@
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -212,7 +212,7 @@
+ 	}
+ 	async run(spec) {
+ 		return this.runArgv(spec, [
+-			"bash",
++			process.platform === "android" ? "/system/bin/sh" : "bash",
+ 			"-c",
+ 			spec.command
+ 		]);
+@@ -255,7 +255,7 @@
+ 	}
+ 	start(spec) {
+ 		return this.startArgv(spec, [
+-			"bash",
++			process.platform === "android" ? "/system/bin/sh" : "bash",
+ 			"-c",
+ 			spec.command
+ 		]);

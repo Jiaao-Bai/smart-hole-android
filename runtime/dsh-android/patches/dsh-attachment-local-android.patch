@@ -1,0 +1,28 @@
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -5,7 +5,6 @@
+ import { createHash, randomUUID } from "node:crypto";
+ import { constants } from "node:fs";
+ import { chmod, link, mkdir, open, readFile, unlink } from "node:fs/promises";
+-import sharp from "sharp";
+ //#region lib/types/image.js
+ /** Raster inspection: full decode at admission, header-only probe on verified reads. */
+ const MEDIA_TYPES = {
+@@ -33,7 +32,8 @@
+ * @returns verified format and dimensions.
+ */
+ async function probeImage(data) {
+ 	try {
++		const { default: sharp } = await import("sharp");
+ 		return await imageMetadata(sharp(data, {
+ 			failOn: "error",
+ 			limitInputPixels: false
+@@ -51,7 +51,8 @@
+ * @returns verified format and dimensions.
+ */
+ async function detectImage(data, maxPixels) {
+ 	try {
++		const { default: sharp } = await import("sharp");
+ 		const image = sharp(data, {
+ 			failOn: "error",
+ 			limitInputPixels: false

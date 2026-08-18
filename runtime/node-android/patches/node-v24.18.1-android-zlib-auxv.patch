@@ -1,0 +1,27 @@
+--- a/deps/zlib/cpu_features.c
++++ b/deps/zlib/cpu_features.c
+@@ -44,7 +44,12 @@ int ZLIB_INTERNAL riscv_cpu_enable_vclmul = 0;
+ #endif
+ 
+ #if defined(ARMV8_OS_ANDROID)
++#if defined(__aarch64__)
++#include <asm/hwcap.h>
++#include <sys/auxv.h>
++#else
+ #include <cpu-features.h>
++#endif
+ #elif defined(ARMV8_OS_LINUX)
+ #include <asm/hwcap.h>
+ #include <sys/auxv.h>
+@@ -106,9 +111,9 @@ static void _cpu_check_features(void)
+ {
+ #if defined(ARMV8_OS_ANDROID) && defined(__aarch64__)
+-    uint64_t features = android_getCpuFeatures();
+-    arm_cpu_enable_crc32 = !!(features & ANDROID_CPU_ARM64_FEATURE_CRC32);
+-    arm_cpu_enable_pmull = !!(features & ANDROID_CPU_ARM64_FEATURE_PMULL);
++    unsigned long features = getauxval(AT_HWCAP);
++    arm_cpu_enable_crc32 = !!(features & HWCAP_CRC32);
++    arm_cpu_enable_pmull = !!(features & HWCAP_PMULL);
+ #elif defined(ARMV8_OS_ANDROID) /* aarch32 */
+     uint64_t features = android_getCpuFeatures();
+     arm_cpu_enable_crc32 = !!(features & ANDROID_CPU_ARM_FEATURE_CRC32);

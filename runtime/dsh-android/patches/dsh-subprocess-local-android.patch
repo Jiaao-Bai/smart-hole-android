@@ -1,0 +1,18 @@
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -1,7 +1,6 @@
+ import { closeSync, constants, mkdtempSync, openSync, readFileSync, readSync, readdirSync, unlinkSync, writeSync } from "node:fs";
+ import { access, stat } from "node:fs/promises";
+ import { delimiter, extname, isAbsolute, join, resolve } from "node:path";
+-import * as nodePty from "node-pty";
+ import { SubprocessRuntime, scrubbedParentEnv } from "@deepseek-ai/dsh-subprocess";
+ import { execFileSync, spawn, spawnSync } from "node:child_process";
+ import { randomBytes } from "node:crypto";
+@@ -993,6 +992,7 @@
+ 			cwd: spec.cwd,
+ 			env: childEnv(spec.env)
+ 		};
++		const nodePty = await import("node-pty");
+ 		const inspector = this.terminalInspector ?? createProcessInspector();
+ 		const handle = new LocalTerminalHandle(nodePty.spawn(file, [...spec.argv.slice(1)], options), inspector, spec.graceMs);
+ 		this.terminals.add(handle);

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">Smart Hole mark</title>
+  <desc id="description">An H-shaped protected portal between the Android app and its root agent.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#315fda"/>
+      <stop offset="0.52" stop-color="#443fd0"/>
+      <stop offset="1" stop-color="#7047d8"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.18" cy="0.12" r="0.9">
+      <stop offset="0" stop-color="#829cff" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#11131f" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="#11131f"/>
+  <rect width="512" height="512" rx="128" fill="url(#background)" opacity="0.78"/>
+  <rect width="512" height="512" rx="128" fill="url(#glow)"/>
+  <path d="M166 130v252M346 130v252" fill="none" stroke="#f7f8ff" stroke-linecap="round" stroke-width="58"/>
+  <path d="M195 256h122" fill="none" stroke="#55e0b5" stroke-linecap="round" stroke-width="48"/>
+</svg>
